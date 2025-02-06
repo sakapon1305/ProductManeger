@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+		th:replace="~{layouts/main :: main(~{::title}, ~{::body/content()})}">
+<head>
+		<title>在庫一覧</title>
+</head>
+<body>
+		<nav class="navbar navbar-default">
+				<div class="container-fluid">
+						<div class="navbar-header">
+								<button type="button" class="navbar-toggle"></button>
+								<span class="navbar-brand" id="page-title">在庫管理システム1.0</span>
+						</div>
+				</div>
+		</nav>
+		<div id="" class="area content">
+				<div class="container-fluid">
+						<div class="row">
+								<div class="col-md-12">
+										<div class="card">
+												<div class="header">
+														<h4 class="title">在庫一覧</h4>
+												</div>
+												<div class="content table-responsive table-full-width">
+						<!-- エラーメッセージ表示 -->
+							<div th:if="${error}" class="alert alert-danger">
+									<span th:text="${error}"></span>
+							</div>
+						<form action="/deleteProducts" class=""method="POST">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>選択</th> <!-- チェックボックスのカラム追加 -->
+									<th>ID</th>
+									<th>商品名</th>
+									<th>数量</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="product : ${productList}">
+									<td><input type="checkbox" th:value="${product.id}" name="selectedProductIds"></td>
+
+									<!-- チェックボックス追加 -->
+									<td th:text="${product.id}"></td>
+									<td th:text="${product.productName}"></td>
+									<td th:text="${product.productCount}">点</td>
+									<td>
+										<a th:href="@{/editForm/{id}(id=${product.id})}" class="btn btn-primary btn-sm">編集</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<input type="hidden" name="selectedProductIds" id="selectedProductIds">
+						<button type="submit" class="btn btn-danger">選択した商品を削除</button>
+						</form>
+<script>
+		document.querySelector("button[type='submit']").addEventListener("click", function(event) {
+				event.preventDefault();
+
+				// ここで選択された商品の ID を取得してリストに追加
+				var selectedIds = []; // 例えば、何かの条件で選択された ID を追加
+
+				// 隠しフィールドに選択された ID をセット
+				document.getElementById("selectedProductIds").value = selectedIds.join(",");
+
+				// フォームを送信
+				event.target.form.submit();
+		});
+</script>
+												</div>
+										</div>
+								</div>
+						</div>
+				</div>
+		</div>
+</body>
+</html>
